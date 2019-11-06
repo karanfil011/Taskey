@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  Taskey
 //
 //  Created by Ali on 05.11.2019.
@@ -8,13 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        
     }
+    
 
 
 }
-
