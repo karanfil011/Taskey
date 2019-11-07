@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddTaskViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class AddTaskViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UITextViewDelegate {
     
     
     let taskTitleLabel: UILabel = {
@@ -23,10 +23,13 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
 
     let textTitleView: UITextView = {
         let titleText = UITextView()
-        titleText.text = "Run 30 km"
-        titleText.textColor = .lightGray
+        titleText.isUserInteractionEnabled = true
+        titleText.isSelectable = true
+        titleText.textColor = UIColor.lightGray
+        titleText.text = "Write here.."
         titleText.translatesAutoresizingMaskIntoConstraints = false
         titleText.font = UIFont.systemFont(ofSize: 20)
+        titleText.isEditable = true
         titleText.isScrollEnabled = false
         return titleText
     }()
@@ -130,7 +133,13 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         let text = UITextView()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.text = "Write here..."
-        text.textColor = .lightGray
+        text.textColor = UIColor.lightGray
+//        text.isEditable = true
+//        text.isSelectable = true
+//        text.isUserInteractionEnabled = true
+//        text.isMultipleTouchEnabled = true
+//        text.delaysContentTouches = true
+//        text.clearsContextBeforeDrawing = true
         text.font = UIFont.systemFont(ofSize: 20)
         return text
     }()
@@ -160,9 +169,12 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         taskCollectionView.register(IconCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+  
+        
+        detailTextView.delegate = self
+        textTitleView.delegate = self
         
         setupViews()
         
@@ -183,6 +195,41 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 43, height: 43)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        
+        if cell!.isSelected {
+            cell?.backgroundColor = .red
+//            cell?.isMultipleTouchEnabled = false
+            
+            cell?.layer.cornerRadius = 5
+        }
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if detailTextView.textColor == UIColor.lightGray {
+            detailTextView.text = nil
+            detailTextView.textColor = UIColor.black
+        }
+        
+        if textTitleView.textColor == UIColor.lightGray {
+            textTitleView.text = nil
+            textTitleView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if detailTextView.text.isEmpty {
+            detailTextView.text = "Write here.."
+            detailTextView.textColor = UIColor.lightGray
+        }
+        
+        if textTitleView.text.isEmpty {
+            textTitleView.text = "Write here..."
+            textTitleView.textColor = UIColor.lightGray
+        }
     }
     
     
