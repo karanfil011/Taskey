@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ChangeTask {
+    func deleteTask(indx: Int)
+}
+
 class MainCollectionViewCell: UICollectionViewCell {
     
     let mainImageView: UIImageView = {
@@ -27,14 +31,13 @@ class MainCollectionViewCell: UICollectionViewCell {
     let checkBoxImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .green
         return image
     }()
     
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .brown
+        button.setImage(UIImage(named: "deleteButton"), for: .normal)
         return button
     }()
     
@@ -42,20 +45,37 @@ class MainCollectionViewCell: UICollectionViewCell {
     var checkBoxImage: UIImage?
     var taskTitle: String?
     
+    var delegate: ChangeTask?
+    var index: IndexPath?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        deleteButton.addTarget(self, action: #selector(deleteTask), for: .touchUpInside)
+        
         
         setupView()
+    }
+    
+    @objc func deleteTask(sender: Any) {
+        
+        delegate?.deleteTask(indx: index!.row)
+        
     }
     
     func setupView() {
         addSubview(mainImageView)
         addSubview(checkBoxImageView)
         addSubview(mainTitleLabel)
+        addSubview(deleteButton)
         
         self.backgroundColor = .green
         self.layer.cornerRadius = 5
+        
+        deleteButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        deleteButton.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         mainImageView.topAnchor.constraint(equalTo: topAnchor, constant: 17).isActive = true
         mainImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -17).isActive = true

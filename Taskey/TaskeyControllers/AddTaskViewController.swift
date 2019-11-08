@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import CoreData
+
+protocol SendData {
+    func sendDataToMain()
+}
 
 class AddTaskViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UITextViewDelegate {
     
@@ -144,7 +149,19 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         return text
     }()
     
+    var taskey = [Taskey]()
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     let cellId = "cellId"
+    
+    var selectedIndex = [Int]()
+    
+    var importance = ""
+    
+    var datePicker: UIDatePicker?
+    
+    var delegate: SendData?
     
     let taskIcons = [
     
@@ -172,12 +189,37 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
 
         taskCollectionView.register(IconCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
   
+        urgentButton.addTarget(self, action: #selector(importanceButtonPressed), for: .touchUpInside)
+        importantButton.addTarget(self, action: #selector(importanceButtonPressed), for: .touchUpInside)
+        notMuchButton.addTarget(self, action: #selector(importanceButtonPressed), for: .touchUpInside)
         
         detailTextView.delegate = self
         textTitleView.delegate = self
         
-        setupViews()
+        datePicker = UIDatePicker()
+        datePicker?.datePickerMode = .dateAndTime
         
+        dateTextView.inputView = datePicker
+        datePicker?.addTarget(self, action: #selector(AddTaskViewController.dateChanged(datePicker:)), for: .valueChanged)
+        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        setupViews()
+        load()
+        
+        
+    }
+    //    @objc func viewTapped(gestureRecognizer: UITapGestureRecognizer) {
+    //        view.endEditing(true)
+    //    }
+    
+    @objc func dateChanged(datePicker: UIDatePicker) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EE, dd.MM.yy, HH:mm"
+        
+        dateTextView.text = dateFormatter.string(from: datePicker.date)
+        //        view.endEditing(true)
     }
     
     
@@ -202,11 +244,149 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         if cell!.isSelected {
             cell?.backgroundColor = .red
-//            cell?.isMultipleTouchEnabled = false
-            
             cell?.layer.cornerRadius = 5
+            if selectedIndex.contains(indexPath.item) {
+                print("same")
+            }
+            else {
+                selectedIndex.append(indexPath.item)
+            }
+            
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        
+        cell?.backgroundColor = .clear
+        let vl = selectedIndex.firstIndex(of: indexPath.item)!
+        selectedIndex.remove(at: vl)
+    }
+    
+    @objc func importanceButtonPressed(sender: UIButton) {
+        
+        if sender == urgentButton {
+            sender.backgroundColor = .red
+            sender.setTitleColor(.white, for: .normal)
+            importance = "urgent"
+        }
+        else if sender == importantButton {
+            sender.backgroundColor = .purple
+            sender.setTitleColor(.white, for: .normal)
+            importance = "important"
+        }
+        else if sender == notMuchButton {
+            sender.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+            sender.setTitleColor(.white, for: .normal)
+            importance = "not much"
+        }
+        
+    }
+    
+    
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        
+        let myTask = Taskey(context: context)
+        myTask.title = textTitleView.text
+        myTask.detail = detailTextView.text
+        myTask.importance = importance
+        myTask.checked = false
+        myTask.notification = dateTextView.text
+        
+        if selectedIndex[0] == 0 {
+            myTask.image = "book"
+        }
+        else if selectedIndex[0] == 1 {
+            myTask.image = "car"
+        }
+        else if selectedIndex[0] == 2 {
+            myTask.image = "cash"
+        }
+        else if selectedIndex[0] == 3 {
+            myTask.image = "company"
+        }
+        else if selectedIndex[0] == 4 {
+            myTask.image = "guitar"
+        }
+        else if selectedIndex[0] == 5 {
+            myTask.image = "glases"
+        }
+        else if selectedIndex[0] == 6 {
+            myTask.image = "carpool"
+        }
+        else if selectedIndex[0] == 7 {
+            myTask.image = "family"
+        }
+        else if selectedIndex[0] == 8 {
+            myTask.image = "kite"
+        }
+        else if selectedIndex[0] == 9 {
+            myTask.image = "note"
+        }
+        else if selectedIndex[0] == 10 {
+            myTask.image = "light"
+        }
+        else if selectedIndex[0] == 11 {
+            myTask.image = "swingset"
+        }
+        else if selectedIndex[0] == 12 {
+            myTask.image = "family"
+        }
+        else if selectedIndex[0] == 13 {
+            myTask.image = "launch"
+        }
+        else if selectedIndex[0] == 14 {
+            myTask.image = "mission"
+        }
+        else if selectedIndex[0] == 15 {
+            myTask.image = "magazine"
+        }
+        
+        taskey.append(myTask)
+        
+        delegate?.sendDataToMain()
+        
+        save()
+        
+        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func save() {
+        do {
+            try context.save()
+        }
+        catch {
+            print("Error saving taskey \(error)")
+        }
+        
+        taskCollectionView.reloadData()
+    }
+    
+    func load() {
+        let request: NSFetchRequest<Taskey> = Taskey.fetchRequest()
+        
+        do {
+            taskey = try context.fetch(request)
+        }
+        catch {
+            print("Error loading taskey \(error)")
+        }
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        textTitleView.resignFirstResponder()
+        detailTextView.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textTitleView.resignFirstResponder()
+        detailTextView.resignFirstResponder()
+        
+        return true
+    }
+
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if detailTextView.textColor == UIColor.lightGray {

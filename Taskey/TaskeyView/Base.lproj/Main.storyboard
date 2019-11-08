@@ -51,6 +51,9 @@
                     <navigationItem key="navigationItem" title="Add" id="TXE-yC-ae7">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="gzH-nX-qyC">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="NSQ-z1-I8v" id="QSJ-Nn-Bh0"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
@@ -78,7 +81,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="HJ3-ce-Fd2">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="NSQ-z1-I8v" kind="show" id="XKS-bZ-GR1"/>
+                                <segue destination="NSQ-z1-I8v" kind="show" identifier="addSegue" id="XKS-bZ-GR1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

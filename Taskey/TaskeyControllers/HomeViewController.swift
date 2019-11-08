@@ -7,8 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SendData, ChangeTask {
+    
+    func deleteTask(indx: Int) {
+        context.delete(taskey[indx])
+        taskey.remove(at: indx)
+        
+        saveTask()
+    }
+    
+    
+    func sendDataToMain() {
+        
+        loadTask()
+        mainCollectionView.reloadData()
+    }
+    
     
     let myTaskTitle: UILabel = {
         let title = UILabel()
@@ -41,31 +57,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     let mainCvCellId = "mainCvCellId"
     
-    let taskIcons = [
-        
-        UIImage(named: "book"),
-        UIImage(named: "car"),
-        UIImage(named: "cash"),
-        UIImage(named: "company"),
-        UIImage(named: "guitar"),
-        UIImage(named: "glases"),
-        UIImage(named: "carpool"),
-        UIImage(named: "family"),
-        UIImage(named: "kite"),
-        UIImage(named: "note"),
-        UIImage(named: "light"),
-        UIImage(named: "swingset"),
-        UIImage(named: "family"),
-        UIImage(named: "launch"),
-        UIImage(named: "mission"),
-        UIImage(named: "magazine"),
-        
-        ]
     
     let checkBoxImage = [
         UIImage(named: "uncheckedBox"),
         UIImage(named: "checkedBox")
     ]
+    
+    var taskey = [Taskey]()
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,16 +74,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         setupView()
         
+        mainCollectionView.reloadData()
+        loadTask()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        return taskey.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mainCvCellId, for: indexPath) as! MainCollectionViewCell
-        cell.iconImage = taskIcons[indexPath.item]
+        cell.iconImage = UIImage(named: taskey[indexPath.item].image!)
+        cell.taskTitle = taskey[indexPath.item].title
         cell.checkBoxImage = checkBoxImage[0]
+        
+        if taskey[indexPath.item].importance == "important" {
+            cell.layer.backgroundColor = UIColor.purple.cgColor
+            cell.mainTitleLabel.textColor = .white
+            
+        }
+        else if taskey[indexPath.item].importance == "urgent" {
+            cell.layer.backgroundColor = UIColor.red.cgColor
+            cell.mainTitleLabel.textColor = .white
+            
+        }
+        else if taskey[indexPath.item].importance == "not much"{
+            cell.layer.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+            cell.mainTitleLabel.textColor = .white
+            
+        }
+        
+        cell.delegate = self
+        cell.index = indexPath
         return cell
     }
     
@@ -96,6 +118,36 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 164, height: 157)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "addSegue" {
+            let addVC = segue.destination as! AddTaskViewController
+            addVC.delegate = self
+        }
+    }
+    
+    func saveTask() {
+        do {
+            try context.save()
+        }
+        catch {
+            print("Error saving taskey \(error)")
+        }
+        
+        self.mainCollectionView.reloadData()
+    }
+    
+    func loadTask() {
+        let request: NSFetchRequest<Taskey> = Taskey.fetchRequest()
+        
+        do {
+            taskey = try context.fetch(request)
+        }
+        catch {
+            print("Error loading taskey \(error)")
+        }
     }
     
     func setupView() {
