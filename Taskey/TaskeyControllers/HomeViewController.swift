@@ -10,6 +10,14 @@ import UIKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    let myTaskTitle: UILabel = {
+        let title = UILabel()
+        title.text = "My Tasks"
+        title.font = UIFont.systemFont(ofSize: 20)
+        title.translatesAutoresizingMaskIntoConstraints = false
+        return title
+    }()
+    
     let mainCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -79,16 +87,29 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let dVC = (storyboard?.instantiateViewController(withIdentifier: "SelectedViewController") as? SelectedViewController)!
+        
+        self.navigationController?.pushViewController(dVC, animated: true)
+
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 164, height: 157)
     }
     
     func setupView() {
+        view.addSubview(myTaskTitle)
         view.addSubview(mainCollectionView)
         view.addSubview(completedLabel)
         
         mainCollectionView.delegate = self
         mainCollectionView.dataSource = self
+        
+        myTaskTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 120).isActive = true
+        myTaskTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 170).isActive = true
+        myTaskTitle.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        myTaskTitle.widthAnchor.constraint(equalToConstant: 120).isActive = true
         
         mainCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
         mainCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
