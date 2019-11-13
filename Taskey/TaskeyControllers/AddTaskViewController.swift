@@ -13,7 +13,7 @@ protocol SendData {
     func sendDataToMain()
 }
 
-class AddTaskViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UITextViewDelegate {
+class AddTaskViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UITextViewDelegate, UITextFieldDelegate {
     
     
     let taskTitleLabel: UILabel = {
@@ -118,7 +118,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         date.textColor = .black
         date.layer.borderColor = UIColor.lightGray.cgColor
         date.layer.borderWidth = 1
-        date.text = "20.01.2020"
+        date.text = "Sun, 20.01.20, 11:38"
         date.textAlignment = .center
         date.layer.cornerRadius = 5
         return date
@@ -139,6 +139,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         text.translatesAutoresizingMaskIntoConstraints = false
         text.text = "Write here..."
         text.textColor = UIColor.lightGray
+        text.showsVerticalScrollIndicator = false
 //        text.isEditable = true
 //        text.isSelectable = true
 //        text.isUserInteractionEnabled = true
@@ -155,7 +156,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     let cellId = "cellId"
     
-    var selectedIndex = [Int]()
+    var selectedIndex = [0]
     
     var importance = ""
     
@@ -196,6 +197,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         detailTextView.delegate = self
         textTitleView.delegate = self
         
+        
         datePicker = UIDatePicker()
         datePicker?.datePickerMode = .dateAndTime
         
@@ -204,9 +206,9 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        setupViews()
         load()
-        
+        setupViews()
+
         
     }
     //    @objc func viewTapped(gestureRecognizer: UITapGestureRecognizer) {
@@ -245,6 +247,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         if cell!.isSelected {
             cell?.backgroundColor = .red
             cell?.layer.cornerRadius = 5
+            selectedIndex.removeAll()
             if selectedIndex.contains(indexPath.item) {
                 print("same")
             }
@@ -253,6 +256,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             
         }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -341,12 +345,14 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         else if selectedIndex[0] == 15 {
             myTask.image = "magazine"
         }
+
         
         taskey.append(myTask)
         
-        delegate?.sendDataToMain()
-        
         save()
+        
+        delegate?.sendDataToMain()
+
         
         self.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)
@@ -360,7 +366,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
             print("Error saving taskey \(error)")
         }
         
-        taskCollectionView.reloadData()
+        self.taskCollectionView.reloadData()
     }
     
     func load() {
@@ -412,7 +418,22 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
+//    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//
+//        let newText = (detailTextView.text! as NSString).replacingCharacters(in: range, with: text)
+//        let numberOfCharacters = newText.count
+//        return numberOfCharacters < 470
+//    }
     
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        guard let textFieldText = textTitleView.text,
+//            let rangeOfTextToReplace = Range(range, in: textFieldText) else {
+//                return false
+//        }
+//        let substringToReplace = textFieldText[rangeOfTextToReplace]
+//        let count = textFieldText.count - substringToReplace.count + string.count
+//        return count <= 40
+//    }
 
     func setupViews() {
         view.addSubview(taskTitleLabel)
@@ -441,7 +462,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         textTitleView.leftAnchor.constraint(equalTo: taskTitleLabel.leftAnchor).isActive = true
         textTitleView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         //        textTitleView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
-        textTitleView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        textTitleView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         textTitleView.widthAnchor.constraint(equalToConstant: 90).isActive = true
 
         chooseIconLabel.topAnchor.constraint(equalTo: textTitleView.bottomAnchor, constant: 15).isActive = true
@@ -492,7 +513,7 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         detailTextView.topAnchor.constraint(equalTo: detailTaskLabel.bottomAnchor, constant: 0).isActive = true
         detailTextView.leftAnchor.constraint(equalTo: detailTaskLabel.leftAnchor).isActive = true
         detailTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        detailTextView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        detailTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
 
         
     }

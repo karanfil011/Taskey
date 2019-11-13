@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AlertView" customModule="Taskey" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="312" height="190"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bfv-VC-iQM">
+                    <rect key="frame" x="0.0" y="0.0" width="312" height="190"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEi-2p-n8N">
+                            <rect key="frame" x="46" y="114" width="80" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.95994755990000002" green="0.0" blue="0.23210402202728159" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Nope"/>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="deleteButton" translatesAutoresizingMaskIntoConstraints="NO" id="AXN-Xw-mMJ">
+                            <rect key="frame" x="143" y="8" width="40" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Are you sure???" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfR-2D-Hg7">
+                            <rect key="frame" x="23" y="56" width="267" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHp-dV-rH1">
+                            <rect key="frame" x="180" y="113" width="80" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.060670539299608417" green="0.44950128730766109" blue="0.95994755990000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Yep"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.95994755990000002" green="0.66666666669999997" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Bfv-VC-iQM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="1FO-Uv-OR6"/>
+                <constraint firstItem="Bfv-VC-iQM" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="FaY-Vr-GdI"/>
+                <constraint firstItem="Bfv-VC-iQM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ilz-6I-ddA"/>
+                <constraint firstItem="Bfv-VC-iQM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Tqy-L4-EXH"/>
+                <constraint firstItem="Bfv-VC-iQM" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="dbC-zL-GKT"/>
+                <constraint firstAttribute="bottom" secondItem="Bfv-VC-iQM" secondAttribute="bottom" id="gTl-JC-cH7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="leftButton" destination="qEi-2p-n8N" id="ane-h7-85V"/>
+                <outlet property="rightButton" destination="lHp-dV-rH1" id="DTs-aS-eH1"/>
+                <outlet property="textLabel" destination="DfR-2D-Hg7" id="qov-2s-4ZT"/>
+                <outlet property="viewOfAlert" destination="Bfv-VC-iQM" id="i3A-lF-usa"/>
+            </connections>
+            <point key="canvasLocation" x="155.07246376811597" y="-119.86607142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="deleteButton" width="142.5" height="142.5"/>
+    </resources>
+</document>

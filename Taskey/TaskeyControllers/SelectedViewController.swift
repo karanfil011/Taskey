@@ -10,14 +10,14 @@ import UIKit
 
 class SelectedViewController: UIViewController {
     
-    let importanceButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .red
-        button.setTitle("urgent", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 5
-        return button
+    let importanceLabel: UIButton = {
+        let label = UIButton()
+        label.titleLabel!.font = UIFont.systemFont(ofSize: 15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.titleLabel!.textAlignment = .center
+        label.titleLabel!.textColor = .white
+        label.layer.cornerRadius = 5
+        return label
     }()
     
     let taskTitleLabel: UILabel = {
@@ -35,7 +35,6 @@ class SelectedViewController: UIViewController {
     let taskTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
-        label.text = "Drive to airport to meet John"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.layer.cornerRadius = 5
         return label
@@ -43,8 +42,6 @@ class SelectedViewController: UIViewController {
     
     let taskImage: UIImageView = {
         let image = UIImageView()
-//        image.backgroundColor = .yellow
-        image.image = UIImage(named: "car")
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -61,10 +58,11 @@ class SelectedViewController: UIViewController {
         textV.layer.borderColor = UIColor.lightGray.cgColor
         textV.layer.borderWidth = 1
         textV.layer.cornerRadius = 5
-        textV.text = "10.01.2019"
         textV.textAlignment = .center
         textV.font = UIFont.systemFont(ofSize: 17)
         textV.translatesAutoresizingMaskIntoConstraints = false
+        textV.isEditable = false
+        textV.isUserInteractionEnabled = false
         return textV
     }()
     
@@ -80,26 +78,53 @@ class SelectedViewController: UIViewController {
     
     let detailTextView: UITextView = {
         let text = UITextView()
-        text.text = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
         text.textAlignment = .left
         text.font = UIFont.systemFont(ofSize: 20)
         text.translatesAutoresizingMaskIntoConstraints = false
-        text.isScrollEnabled = false
+        text.showsVerticalScrollIndicator = false
+        text.isEditable = false
         return text
     }()
     
 
+    var image: String?
+    var importance: String?
+    var titleTask: String?
+    var detailTask: String?
+    var taskNotification: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        taskImage.image = UIImage(named: image!)
+        taskTitle.text = titleTask
+        detailTextView.text = detailTask
+        dateNotificationLabel.text = taskNotification
+        
+        if importance == "urgent" {
+            importanceLabel.backgroundColor = .red
+            importanceLabel.setTitle(importance, for: .normal)
+        }
+        else if importance == "important" {
+            importanceLabel.backgroundColor = .purple
+            importanceLabel.setTitle(importance, for: .normal)
+        }
+        else {
+            importanceLabel.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+            importanceLabel.setTitle(importance, for: .normal)
+        }
 
+        
       setupView()
         
         
     }
     
     
+    
+    
     func setupView() {
-        view.addSubview(importanceButton)
+        view.addSubview(importanceLabel)
         view.addSubview(taskImage)
         view.addSubview(taskTitle)
         view.addSubview(selectedNotificationLabel)
@@ -108,10 +133,10 @@ class SelectedViewController: UIViewController {
         view.addSubview(taskTitleLabel)
         view.addSubview(detailTaskLabel)
         
-        importanceButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
-        importanceButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        importanceButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        importanceButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        importanceLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        importanceLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        importanceLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        importanceLabel.widthAnchor.constraint(equalToConstant: 90).isActive = true
         
         taskImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
         taskImage.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
@@ -126,7 +151,7 @@ class SelectedViewController: UIViewController {
         taskTitle.topAnchor.constraint(equalTo: taskTitleLabel.bottomAnchor).isActive = true
         taskTitle.leftAnchor.constraint(equalTo: taskTitleLabel.leftAnchor, constant: 3).isActive = true
         taskTitle.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        taskTitle.rightAnchor.constraint(equalTo: importanceButton.rightAnchor).isActive = true
+        taskTitle.rightAnchor.constraint(equalTo: importanceLabel.rightAnchor).isActive = true
         
         selectedNotificationLabel.topAnchor.constraint(equalTo: taskTitle.bottomAnchor, constant: 10).isActive = true
         selectedNotificationLabel.leftAnchor.constraint(equalTo: taskTitle.leftAnchor).isActive = true
@@ -135,8 +160,8 @@ class SelectedViewController: UIViewController {
         
 //        dateNotificationLabel.topAnchor.constraint(equalTo: selectedNotificationLabel.topAnchor).isActive = true
         dateNotificationLabel.leftAnchor.constraint(equalTo: selectedNotificationLabel.rightAnchor, constant: 20).isActive = true
-        dateNotificationLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        dateNotificationLabel.widthAnchor.constraint(equalToConstant: 140).isActive = true
+        dateNotificationLabel.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        dateNotificationLabel.widthAnchor.constraint(equalToConstant: 180).isActive = true
         dateNotificationLabel.centerYAnchor.constraint(equalTo: selectedNotificationLabel.centerYAnchor).isActive = true
         
         detailTaskLabel.topAnchor.constraint(equalTo: selectedNotificationLabel.bottomAnchor, constant: 20).isActive = true
@@ -147,7 +172,7 @@ class SelectedViewController: UIViewController {
         detailTextView.topAnchor.constraint(equalTo: detailTaskLabel.bottomAnchor).isActive = true
         detailTextView.leftAnchor.constraint(equalTo: taskTitle.leftAnchor).isActive = true
         detailTextView.rightAnchor.constraint(equalTo: taskTitle.rightAnchor).isActive = true
-        detailTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
+        detailTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
     }
 
 }

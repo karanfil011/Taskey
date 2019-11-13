@@ -61,7 +61,7 @@
             </objects>
             <point key="canvasLocation" x="3847.826086956522" y="-140.625"/>
         </scene>
-        <!--Home-->
+        <!--My Tasks-->
         <scene sceneID="FrW-X4-DZM">
             <objects>
                 <viewController id="ril-rs-YNW" customClass="HomeViewController" customModule="Taskey" customModuleProvider="target" sceneMemberID="viewController">
@@ -71,7 +71,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="ftt-c5-cMZ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Home" id="6Hm-fv-peV">
+                    <navigationItem key="navigationItem" title="My Tasks" id="6Hm-fv-peV">
                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="Vu9-aV-9Y2">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>

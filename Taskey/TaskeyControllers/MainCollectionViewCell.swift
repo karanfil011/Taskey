@@ -10,6 +10,7 @@ import UIKit
 
 protocol ChangeTask {
     func deleteTask(indx: Int)
+    func checkTask(indChk: Int)
 }
 
 class MainCollectionViewCell: UICollectionViewCell {
@@ -23,14 +24,17 @@ class MainCollectionViewCell: UICollectionViewCell {
     let mainTitleLabel: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.text = "Title"
+//        title.text = "Title"
         title.font = UIFont.systemFont(ofSize: 17)
         return title
     }()
     
-    let checkBoxImageView: UIImageView = {
-        let image = UIImageView()
+    let checkBoxImageButton: UIButton = {
+        let image = UIButton()
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.isUserInteractionEnabled = true
+        image.isEnabled = true
+        image.isMultipleTouchEnabled = true
         return image
     }()
     
@@ -41,18 +45,18 @@ class MainCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    var iconImage: UIImage?
-    var checkBoxImage: UIImage?
-    var taskTitle: String?
     
     var delegate: ChangeTask?
+    var checkDelegate: ChangeTask?
     var index: IndexPath?
+    
+    var indChk: IndexPath?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         deleteButton.addTarget(self, action: #selector(deleteTask), for: .touchUpInside)
-        
+        checkBoxImageButton.addTarget(self, action: #selector(checkTask), for: .touchUpInside)
         
         setupView()
     }
@@ -63,9 +67,13 @@ class MainCollectionViewCell: UICollectionViewCell {
         
     }
     
+    @objc func checkTask(sender: Any) {
+        checkDelegate?.checkTask(indChk: index!.row)
+    }
+    
     func setupView() {
         addSubview(mainImageView)
-        addSubview(checkBoxImageView)
+        addSubview(checkBoxImageButton)
         addSubview(mainTitleLabel)
         addSubview(deleteButton)
         
@@ -82,13 +90,13 @@ class MainCollectionViewCell: UICollectionViewCell {
         mainImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         mainImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        checkBoxImageView.topAnchor.constraint(equalTo: topAnchor, constant: 17).isActive = true
-        checkBoxImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 17).isActive = true
-        checkBoxImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        checkBoxImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        checkBoxImageButton.topAnchor.constraint(equalTo: topAnchor, constant: 17).isActive = true
+        checkBoxImageButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 17).isActive = true
+        checkBoxImageButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        checkBoxImageButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        mainTitleLabel.topAnchor.constraint(equalTo: checkBoxImageView.bottomAnchor, constant: 14).isActive = true
-        mainTitleLabel.leftAnchor.constraint(equalTo: checkBoxImageView.leftAnchor).isActive = true
+        mainTitleLabel.topAnchor.constraint(equalTo: checkBoxImageButton.bottomAnchor, constant: 14).isActive = true
+        mainTitleLabel.leftAnchor.constraint(equalTo: checkBoxImageButton.leftAnchor).isActive = true
         mainTitleLabel.rightAnchor.constraint(equalTo: mainImageView.rightAnchor).isActive = true
         mainTitleLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
@@ -98,17 +106,6 @@ class MainCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if let image = iconImage {
-            mainImageView.image = image
-        }
-        
-        if let image = checkBoxImage {
-            checkBoxImageView.image = image
-        }
-        
-        if let title = taskTitle {
-            mainTitleLabel.text = title
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
