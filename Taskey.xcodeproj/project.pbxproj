@@ -11,8 +11,6 @@
 		4131E7D62371D7EF008D65C2 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131E7D52371D7EF008D65C2 /* AddTaskViewController.swift */; };
 		4131E7DA2371F4F2008D65C2 /* IconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131E7D92371F4F2008D65C2 /* IconCollectionViewCell.swift */; };
 		4131E7DC2372FAD0008D65C2 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131E7DB2372FAD0008D65C2 /* MainCollectionViewCell.swift */; };
-		4131E7DE237338F9008D65C2 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131E7DD237338F9008D65C2 /* SettingsTableViewController.swift */; };
-		4131E7E023733CCD008D65C2 /* SettingsItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131E7DF23733CCD008D65C2 /* SettingsItemTableViewCell.swift */; };
 		41AC22E723749A6000ABB45B /* SelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AC22E623749A6000ABB45B /* SelectedViewController.swift */; };
 		41B329DA237B407500985077 /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41B329D9237B407500985077 /* AlertView.xib */; };
 		41B329DC237B43C200985077 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B329DB237B43C200985077 /* AlertView.swift */; };
@@ -28,8 +26,6 @@
 		4131E7D52371D7EF008D65C2 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		4131E7D92371F4F2008D65C2 /* IconCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCollectionViewCell.swift; sourceTree = "<group>"; };
 		4131E7DB2372FAD0008D65C2 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
-		4131E7DD237338F9008D65C2 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		4131E7DF23733CCD008D65C2 /* SettingsItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTableViewCell.swift; sourceTree = "<group>"; };
 		41AC22E623749A6000ABB45B /* SelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedViewController.swift; sourceTree = "<group>"; };
 		41B329D9237B407500985077 /* AlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
 		41B329DB237B43C200985077 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
@@ -61,8 +57,6 @@
 				4131E7D52371D7EF008D65C2 /* AddTaskViewController.swift */,
 				4131E7D92371F4F2008D65C2 /* IconCollectionViewCell.swift */,
 				4131E7DB2372FAD0008D65C2 /* MainCollectionViewCell.swift */,
-				4131E7DD237338F9008D65C2 /* SettingsTableViewController.swift */,
-				4131E7DF23733CCD008D65C2 /* SettingsItemTableViewCell.swift */,
 				41B329D9237B407500985077 /* AlertView.xib */,
 				41B329DB237B43C200985077 /* AlertView.swift */,
 			);
@@ -193,10 +187,8 @@
 				4131E7D62371D7EF008D65C2 /* AddTaskViewController.swift in Sources */,
 				41BFBBB22371903C00289755 /* AppDelegate.swift in Sources */,
 				41B329DC237B43C200985077 /* AlertView.swift in Sources */,
-				4131E7E023733CCD008D65C2 /* SettingsItemTableViewCell.swift in Sources */,
 				4131E7D42371D71C008D65C2 /* HomeViewController.swift in Sources */,
 				41AC22E723749A6000ABB45B /* SelectedViewController.swift in Sources */,
-				4131E7DE237338F9008D65C2 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

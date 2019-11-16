@@ -118,7 +118,10 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
         date.textColor = .black
         date.layer.borderColor = UIColor.lightGray.cgColor
         date.layer.borderWidth = 1
-        date.text = "Sun, 20.01.20, 11:38"
+        let currentDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat =  "EE, MM.dd.yy HH:mm"
+        date.text = formatter.string(from: currentDate)
         date.textAlignment = .center
         date.layer.cornerRadius = 5
         return date
@@ -218,12 +221,41 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
     @objc func dateChanged(datePicker: UIDatePicker) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EE, dd.MM.yy, HH:mm"
+        dateFormatter.dateFormat = "EE, MM.dd.yy HH:mm"
         
         dateTextView.text = dateFormatter.string(from: datePicker.date)
         //        view.endEditing(true)
     }
     
+//    var releaseDate: NSDate?
+//    var countdownTimer = Timer()
+//
+//    func startTimer() {
+//
+//        let releaseDateString = dateTextView.text
+//        let releaseDateFormatter = DateFormatter()
+//        releaseDateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+//        releaseDate = releaseDateFormatter.date(from: releaseDateString!)! as NSDate
+//
+//        countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+//    }
+//
+//    @objc func updateTime() {
+//
+//        let currentDate = Date()
+//        let calendar = Calendar.current
+//
+//        let diffDateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: currentDate, to: releaseDate! as Date)
+//
+//
+//        let countdown = "Days \(diffDateComponents.day ?? 0), Hours \(diffDateComponents.hour ?? 0), Minutes \(diffDateComponents.minute ?? 0), Seconds \(diffDateComponents.second ?? 0)"
+//
+//        if diffDateComponents.second == 0 {
+//            print("Shit")
+//        }
+//
+//        print(countdown)
+//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return taskIcons.count
@@ -284,12 +316,17 @@ class AddTaskViewController: UIViewController, UICollectionViewDelegate, UIColle
             sender.setTitleColor(.white, for: .normal)
             importance = "not much"
         }
+        else {
+            sender.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+            sender.setTitleColor(.white, for: .normal)
+            importance = "not much"
+        }
         
     }
     
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-        
+//        startTimer()
         let myTask = Taskey(context: context)
         myTask.title = textTitleView.text
         myTask.detail = detailTextView.text

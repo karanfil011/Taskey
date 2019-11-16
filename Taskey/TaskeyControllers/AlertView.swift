@@ -10,6 +10,7 @@ import UIKit
 
 class AlertView: UIView {
 
+    @IBOutlet weak var xImage: UIImageView!
     @IBOutlet weak var viewOfAlert: UIView!
     @IBOutlet weak var textLabel: UILabel!
    
@@ -18,17 +19,6 @@ class AlertView: UIView {
     
     @IBOutlet weak var rightButton: UIButton!
     
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        addSubview(leftButton)
-//        addSubview(rightButton)
-//        leftButton.layer.cornerRadius = 5
-//        rightButton.layer.cornerRadius = 5
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     
 }

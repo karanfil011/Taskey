@@ -70,28 +70,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: mainCvCellId)
        
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (grandet, error) in
-            
-        }
-       
-        let content = UNMutableNotificationContent()
-        content.title = "Hey im notif"
-        content.body = "i cant type"
-        
-        let date = Date().addingTimeInterval(10)
-        
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        
-        let uuidString = UUID().uuidString
-        
-        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-        
-        center.add(request) { (error) in
-            
-        }
+      
         
         setupView()
         
@@ -103,14 +82,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         alertView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
         alertView.alpha = 0
         
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.2) {
             self.alertView.alpha = 1
             self.alertView.transform = CGAffineTransform.identity
         }
     }
     
     func animateOut() {
-        UIView.animate(withDuration: 0.4, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.alertView.alpha = 0
             self.alertView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
         }) { (_) in
@@ -125,6 +104,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         alertView.viewOfAlert.layer.cornerRadius = 5
         alertView.leftButton.layer.cornerRadius = 5
         alertView.rightButton.layer.cornerRadius = 5
+        alertView.viewOfAlert.backgroundColor = .purple
+        alertView.textLabel.textColor = .white
+        alertView.rightButton.setTitle("Delete", for: .normal)
         alertView.leftButton.addTarget(self, action: #selector(leftButtonPressed), for: .touchUpInside)
         alertView.rightButton.addTarget(self, action: #selector(rightButtonPressed), for: .touchUpInside)
         animateIn()
@@ -167,6 +149,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         cell.mainTitleLabel.text = taskey[indexPath.item].title
         cell.mainImageView.image = UIImage(named: taskey[indexPath.item].image!)
+//        print(taskey[indexPath.item].notification!)
         
         if taskey[indexPath.item].importance == "important" {
             cell.layer.backgroundColor = UIColor.purple.cgColor
@@ -182,6 +165,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cell.layer.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
             cell.mainTitleLabel.textColor = .white
         }
+        else {
+            cell.layer.backgroundColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+            cell.mainTitleLabel.textColor = .white
+        }
         
         if taskey[indexPath.item].checked == false {
             cell.checkBoxImageButton.setImage(checkBoxImage[0], for: .normal)
@@ -190,6 +177,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cell.checkBoxImageButton.setImage(checkBoxImage[1], for: .normal)
         }
         
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (grandet, error) in
+            
+        }
+        
+        let content = UNMutableNotificationContent()
+        content.title = taskey[indexPath.item].title!
+        content.sound = UNNotificationSound.default
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EE, MM.dd.yy HH:mm"
+
+        let date = formatter.date(from: taskey[indexPath.item].notification!)
+
+
+        if let date = date {
+//             Date().timeIntervalSince(date)
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        
+
+        
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+
+        let uuidString = UUID().uuidString
+
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+
+        center.add(request) { (error) in
+
+        }
+        }
         cell.index = indexPath
         cell.delegate = self
         cell.checkDelegate = self
